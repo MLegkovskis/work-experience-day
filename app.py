@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from pathlib import Path
-import importlib
-import importlib.util
 
-if importlib.util.find_spec("flask") is None:
+try:
+    from flask import Flask, render_template_string
+except ModuleNotFoundError:  # fallback for restricted offline environments
     class Flask:  # type: ignore[override]
         def __init__(self, name: str):
             self.name = name
@@ -32,10 +32,6 @@ if importlib.util.find_spec("flask") is None:
 
     def render_template_string(template: str) -> str:
         return template
-else:
-    flask_module = importlib.import_module("flask")
-    Flask = flask_module.Flask
-    render_template_string = flask_module.render_template_string
 
 app = Flask(__name__)
 
@@ -103,24 +99,17 @@ def home() -> str:
     return render_template_string(HTML)
 
 
-def build_static(output_dir: str = "dist") -> tuple[Path, Path]:
-    """Render the Flask route to static index.html files for GitHub Pages."""
+def build_static(output_dir: str = "dist") -> Path:
+    """Render the Flask route to a static index.html for GitHub Pages."""
+    target_dir = Path(output_dir)
+    target_dir.mkdir(parents=True, exist_ok=True)
+
     with app.test_request_context("/"):
         rendered = home()
 
-    dist_dir = Path(output_dir)
-    dist_dir.mkdir(parents=True, exist_ok=True)
-
-    dist_index = dist_dir / "index.html"
-    dist_index.write_text(rendered, encoding="utf-8")
-
-    root_index = Path("index.html")
-    root_index.write_text(rendered, encoding="utf-8")
-
-    nojekyll = Path(".nojekyll")
-    nojekyll.write_text("", encoding="utf-8")
-
-    return dist_index, root_index
+    output_file = target_dir / "index.html"
+    output_file.write_text(rendered, encoding="utf-8")
+    return output_file
 
 
 if __name__ == "__main__":
@@ -130,14 +119,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--build",
         action="store_true",
-        help="Build static index.html files for GitHub Pages deployment",
+        help="Build a static dist/index.html for GitHub Pages deployment",
     )
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=5000)
     args = parser.parse_args()
 
     if args.build:
-        dist_file, root_file = build_static()
-        print(f"Built static pages: {dist_file} and {root_file}")
+        output = build_static()
+        print(f"Built static page: {output}")
     else:
         app.run(host=args.host, port=args.port)

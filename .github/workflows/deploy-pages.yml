@@ -5,8 +5,6 @@ on:
     branches: ["main"]
     paths:
       - "app.py"
-      - "index.html"
-      - ".nojekyll"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
@@ -28,9 +26,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -60,5 +55,5 @@ jobs:
             echo ""
             echo "Hosted URL: **${{ steps.deploy.outputs.page_url }}**"
             echo ""
-            echo "If you still see 404, go to Settings → Pages and set Source to **GitHub Actions**."
+            echo "Open the job logs and this summary to find the link quickly."
           } >> "$GITHUB_STEP_SUMMARY"
