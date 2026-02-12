@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Alexa Marketing Playground</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(120deg, #232f3e, #00a8e1);
+        color: #fff;
+      }
+      .card {
+        text-align: center;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 16px;
+        padding: 2rem;
+        width: min(90vw, 700px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+      }
+      h1 {
+        margin-top: 0;
+        font-size: clamp(1.8rem, 4vw, 3rem);
+      }
+      p {
+        margin-bottom: 0;
+        opacity: 0.9;
+      }
+      code {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        padding: 0.2rem 0.4rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <h1>Alexa Marketing Playground</h1>
+      <p>This starter page is generated from <code>app.py</code> and deployed via GitHub Pages.</p>
+      <p id="build-time"></p>
+    </main>
+    <script>
+      const now = new Date();
+      document.getElementById("build-time").textContent =
+        `Loaded at ${now.toLocaleString()}`;
+    </script>
+  </body>
+</html>
