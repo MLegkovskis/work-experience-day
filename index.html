@@ -16,6 +16,14 @@
         background: linear-gradient(120deg, #232f3e, #00a8e1);
         color: #fff;
       }
+      .alexa-corner {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        width: min(22vw, 150px);
+        height: auto;
+        filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
+      }
       .card {
         text-align: center;
         background: rgba(0, 0, 0, 0.35);
@@ -59,11 +67,23 @@
       #facts-list.show {
         display: block;
       }
+      @media (max-width: 640px) {
+        .alexa-corner {
+          width: 84px;
+          top: 8px;
+          right: 8px;
+        }
+      }
     </style>
   </head>
   <body>
+    <img
+      class="alexa-corner"
+      src="images/Alexa-Echo-Transparent-Image.png"
+      alt="Amazon Alexa Echo device"
+    />
     <main class="card">
-      <h1>Alexa Marketing Playground hello</h1>
+      <h1>Alexa Marketing Playground</h1>
       <p>Build a simple marketing page for Alexa with your team.</p>
       <ul>
         <li>Change colors, fonts, and layout</li>
