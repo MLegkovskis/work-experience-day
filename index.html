@@ -229,6 +229,33 @@
           transform: translate(-50%, -50%) scale(0.9);
         }
       }
+      @keyframes float-hearts {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+      .heart {
+        position: fixed;
+        font-size: 24px;
+        pointer-events: none;
+        z-index: 5;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+      }
     </style>
   </head>
   <body>
@@ -275,6 +302,19 @@
       // Create glitter trail behind unicorn
       const unicornContainer = document.getElementById("unicorn-container");
       const glitterColors = ["#ff69b4", "#ffcc4d", "#00a8e1", "#ff1493", "#ffd700"];
+      
+      // Floating hearts effect
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.textContent = "💖";
+        heart.style.left = Math.random() * 100 + "%";
+        heart.style.animationDuration = (5 + Math.random() * 3) + "s";
+        heart.style.animation = "float-hearts linear forwards";
+        document.body.appendChild(heart);
+        
+        setTimeout(() => heart.remove(), 8000);
+      }, 1200);
       
       setInterval(() => {
         const glitter = document.createElement("div");
