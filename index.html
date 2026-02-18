@@ -79,9 +79,51 @@
           right: 8px;
         }
       }
+      .unicorn-container {
+        position: fixed;
+        top: 50%;
+        left: -100px;
+        width: 100%;
+        height: 100px;
+        pointer-events: none;
+        animation: unicorn-run 8s linear infinite;
+      }
+      .unicorn {
+        font-size: 80px;
+        position: absolute;
+        left: 0;
+      }
+      .glitter {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      @keyframes unicorn-run {
+        from {
+          left: -100px;
+        }
+        to {
+          left: 100vw;
+        }
+      }
+      @keyframes glitter-sparkle {
+        0% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(30px) scale(0);
+        }
+      }
     </style>
   </head>
   <body>
+    <div class="unicorn-container" id="unicorn-container">
+      <div class="unicorn">🦄</div>
+    </div>
     <img
       class="alexa-corner"
       src="images/Alexa-Echo-Transparent-Image.png"
@@ -117,6 +159,21 @@
           ? "Hide fun facts"
           : "Show 5 fun facts about Alexa";
       });
+
+      // Create glitter trail behind unicorn
+      const unicornContainer = document.getElementById("unicorn-container");
+      const glitterColors = ["#ff69b4", "#ffcc4d", "#00a8e1", "#ff1493", "#ffd700"];
+      
+      setInterval(() => {
+        const glitter = document.createElement("div");
+        glitter.className = "glitter";
+        glitter.style.left = Math.random() * 60 + "px";
+        glitter.style.backgroundColor = glitterColors[Math.floor(Math.random() * glitterColors.length)];
+        glitter.style.animation = "glitter-sparkle 1s ease-out forwards";
+        unicornContainer.appendChild(glitter);
+        
+        setTimeout(() => glitter.remove(), 1000);
+      }, 100);
     </script>
   </body>
 </html>
