@@ -112,12 +112,13 @@
       /* Floating facts border */
       .facts-border {
         position: fixed;
-        left: -500px;
-        top: 0;
-        height: 100vh;
-        width: 200px;
+        left: 50%;
+        top: -50px;
+        height: auto;
+        width: auto;
         z-index: 1;
-        animation: slide-facts 20s linear infinite;
+        transform: translateX(-50%);
+        animation: slide-facts 40s linear infinite;
       }
       
       .facts-border:nth-child(8) {
@@ -125,12 +126,80 @@
       }
       
       .facts-border:nth-child(9) {
-        animation-delay: 10s;
+        animation-delay: 20s;
       }
       
       @keyframes slide-facts {
-        0% { left: -500px; }
-        100% { left: 100vw; }
+        0% { 
+          left: 50%; 
+          top: -50px; 
+          transform: translateX(-50%);
+        }
+        25% { 
+          left: calc(100% + 50px); 
+          top: 50%; 
+          transform: translateX(0) translateY(-50%);
+        }
+        50% { 
+          left: 50%; 
+          top: calc(100% + 50px); 
+          transform: translateX(-50%);
+        }
+        75% { 
+          left: -50px; 
+          top: 50%; 
+          transform: translateX(0) translateY(-50%);
+        }
+        100% { 
+          left: 50%; 
+          top: -50px; 
+          transform: translateX(-50%);
+        }
+      }
+      
+      .running-unicorn-container {
+        position: fixed;
+        bottom: 20px;
+        left: -100px;
+        width: 100%;
+        height: 60px;
+        pointer-events: none;
+        animation: unicorn-run-bottom 8s linear infinite;
+        z-index: 2;
+      }
+      
+      .running-unicorn {
+        font-size: 50px;
+        position: absolute;
+        left: 0;
+      }
+      
+      .glitter-trail {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      
+      @keyframes unicorn-run-bottom {
+        from {
+          left: -100px;
+        }
+        to {
+          left: 100vw;
+        }
+      }
+      
+      @keyframes glitter-trail-fade {
+        0% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(20px) scale(0);
+        }
       }
       
       .fact-item {
@@ -138,11 +207,11 @@
         border: 3px solid #ff1493;
         border-radius: 15px;
         padding: 1rem;
-        margin: 2rem 0;
-        font-size: 0.85rem;
+        margin: 1rem 0;
+        font-size: 0.9rem;
         font-weight: 600;
         text-align: center;
-        width: 150px;
+        width: 160px;
         box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
         color: #fff;
       }
@@ -345,6 +414,31 @@
       
       .game-info div {
         margin: 0.5rem 0;
+        font-size: 1rem;
+      }
+      
+      .game-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1.5rem;
+      }
+      
+      #restartBtn {
+        background: #ffcc4d;
+        color: #232f3e;
+        padding: 0.8rem 1.5rem;
+        border: 0;
+        border-radius: 15px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      #restartBtn:hover {
+        filter: brightness(1.15);
+        transform: scale(1.05);
       }
       
       @media (max-width: 640px) {
@@ -395,6 +489,11 @@
       </div>
     </div>
     
+    <!-- Running unicorn with glitter trail -->
+    <div class="running-unicorn-container" id="unicorn-container">
+      <div class="running-unicorn">🦄</div>
+    </div>
+    
     <!-- Main content -->
     <main class="card">
       <h1>✨ You call it magic, we call it ALEXA ✨</h1>
@@ -424,9 +523,12 @@
         <h2 style="text-align: center; color: #fff; margin-top: 0;">🦄 UNICORN ADVENTURE 🦄</h2>
         <canvas id="gameCanvas" width="400" height="400"></canvas>
         <div class="game-info">
-          <div>Score: <span id="score">0</span></div>
+          <div style="font-size: 1.2rem; font-weight: 800;">Score: <span id="score">0</span></div>
           <div>Use Arrow Keys or WASD to move</div>
-          <div style="margin-top: 1rem; font-size: 0.9rem;">🦄 = Unicorn | 🎤 = Alexa (food)</div>
+          <div style="margin-top: 1rem; font-size: 1rem;">🦄 = Unicorn | 🎤 = Alexa (food)</div>
+          <div class="game-buttons">
+            <button id="restartBtn" type="button">🔄 RESTART</button>
+          </div>
         </div>
       </div>
     </div>
@@ -585,7 +687,7 @@
         if (!gameRunning) return;
         updateGame();
         drawGame();
-        setTimeout(gameLoop, 100);
+        setTimeout(gameLoop, 200);
       }
       
       document.addEventListener("keydown", (e) => {
@@ -597,22 +699,40 @@
       });
       
       snakeBtn.addEventListener("click", () => {
+        resetGame();
         gameModal.classList.add("show");
         drawGame();
         gameRunning = true;
         gameLoop();
       });
       
+      // Create glitter trail behind running unicorn
+      const glitterColors = ["#ff69b4", "#ffcc4d", "#00a8e1", "#ff1493", "#ffd700"];
+      
+      setInterval(() => {
+        if (unicornContainer.offsetLeft > -100 && unicornContainer.offsetLeft < window.innerWidth) {
+          const glitter = document.createElement("div");
+          glitter.className = "glitter-trail";
+          glitter.style.left = Math.random() * 40 + "px";
+          glitter.style.backgroundColor = glitterColors[Math.floor(Math.random() * glitterColors.length)];
+          glitter.style.animation = "glitter-trail-fade 1.5s ease-out forwards";
+          unicornContainer.appendChild(glitter);
+          
+          setTimeout(() => glitter.remove(), 1500);
+        }
+      }, 50);
+      
       closeBtn.addEventListener("click", () => {
         gameModal.classList.remove("show");
         gameRunning = false;
       });
       
-      gameModal.addEventListener("click", (e) => {
-        if (e.target === gameModal) {
-          gameModal.classList.remove("show");
-          gameRunning = false;
-        }
+      const restartBtn = document.getElementById("restartBtn");
+      restartBtn.addEventListener("click", () => {
+        resetGame();
+        drawGame();
+        gameRunning = true;
+        gameLoop();
       });
     </script>
   </body>
