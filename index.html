@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head> 
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Alexa Marketing Playground PREP work test</title>
@@ -18,9 +18,11 @@
         display: flex;
         flex-direction: column;
         color: #fff;
+        background:
+          linear-gradient(rgba(2, 8, 23, 0.7), rgba(2, 8, 23, 0.55)),
+          url("images/Alexa-Echo-Transparent-Image.png") center/cover no-repeat;
       }
 
-      /* Horizontal stripes: each stripe fills available width and grows equally */
       .stripe {
         flex: 1 1 0;
         display: flex;
@@ -32,25 +34,51 @@
         font-weight: 800;
         letter-spacing: 0.12em;
         -webkit-font-smoothing: antialiased;
+        position: relative;
       }
 
-      /* Large, responsive text */
       .stripe .label {
         font-size: clamp(2.5rem, 10vw, 8rem);
         line-height: 1;
+        color: #fff;
+        display: inline-block;
+        padding: 0.1em 0.25em;
+        border-radius: 0.2em;
+        -webkit-text-stroke: 2px #0f766e;
+        text-shadow:
+          0 0 2px #14b8a6,
+          0 0 5px #2dd4bf,
+          0 0 8px #5eead4,
+          0 0 12px #0f766e;
       }
 
-      /* Alternating color scheme for contrast */
       .stripe:nth-child(odd) {
-        background: linear-gradient(90deg,#0b3d91,#1663c7);
-        color: #fff;
+        background: rgba(15, 23, 42, 0.2);
       }
       .stripe:nth-child(even) {
-        background: linear-gradient(90deg,#ffd23f,#ff7a18);
-        color: #0b2b5a;
+        background: rgba(255, 255, 255, 0.08);
       }
 
-      /* Ensure very short viewports remain readable */
+      .arrow {
+        position: fixed;
+        left: 50%;
+        bottom: 1.25rem;
+        transform: translateX(-50%);
+        width: 3.2rem;
+        height: 3.2rem;
+        border: 0.2rem solid #2dd4bf;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        font-size: 1.8rem;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow:
+          0 0 6px #2dd4bf,
+          0 0 12px #14b8a6,
+          inset 0 0 8px #5eead4;
+      }
+
       @media (max-height: 420px) {
         .stripe .label { font-size: clamp(1.4rem, 6vw, 3.6rem); }
       }
@@ -65,5 +93,6 @@
     <div class="stripe"><div class="label">Alexa</div></div>
     <div class="stripe"><div class="label">Alexa</div></div>
     <div class="stripe"><div class="label">Alexa</div></div>
+    <div class="arrow" aria-hidden="true">↓</div>
   </body>
 </html>
