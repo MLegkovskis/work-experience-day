@@ -101,15 +101,166 @@
           inset 0 0 10px rgba(224, 242, 254, 0.7);
       }
 
+      .game-shell {
+        position: fixed;
+        top: 0.7rem;
+        left: 0.7rem;
+        width: 6cm;
+        height: 6cm;
+        max-width: min(38vw, 8rem);
+        max-height: min(38vw, 8rem);
+        padding: 0.35rem;
+        box-sizing: border-box;
+        border-radius: 0.7rem;
+        background: rgba(3, 10, 25, 0.72);
+        border: 1px solid rgba(125, 211, 252, 0.7);
+        box-shadow: 0 0 10px rgba(125, 211, 252, 0.35);
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+
+      .game-shell h2 {
+        margin: 0;
+        font-size: 0.55rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        text-align: center;
+        color: #e0f2fe;
+      }
+
+      .game-shell canvas {
+        flex: 1;
+        width: 100%;
+        height: 100%;
+        display: block;
+        border-radius: 0.45rem;
+        background: linear-gradient(180deg, #b8e7ff 0%, #f7fbff 100%);
+      }
+
+      .game-shell p {
+        margin: 0;
+        font-size: 0.45rem;
+        text-align: center;
+        color: #dbeafe;
+      }
+
       @media (max-height: 420px) {
-        .hero .label { font-size: clamp(1.4rem, 6vw, 3.6rem); }
+        .hero .logo { font-size: clamp(1.4rem, 6vw, 3.6rem); }
       }
     </style>
   </head>
   <body>
+    <section class="game-shell" aria-label="Parcel delivery mini game">
+      <h2>Parcel Run</h2>
+      <canvas id="deliveryGame" width="220" height="220"></canvas>
+      <p>Use arrow keys to reach the door.</p>
+    </section>
+
     <main class="hero">
       <img class="logo" src="images/Amazon_Alexa_App_Logo.png" alt="Alexa logo" />
     </main>
     <div class="arrow" aria-hidden="true">↓</div>
+
+    <script>
+      const canvas = document.getElementById('deliveryGame');
+      const ctx = canvas.getContext('2d');
+      const size = 220;
+      const parcel = { x: 18, y: 180, w: 16, h: 16, speed: 2 };
+      const door = { x: 178, y: 24, w: 24, h: 30 };
+      const obstacles = [
+        { x: 76, y: 70, w: 30, h: 70 },
+        { x: 122, y: 124, w: 52, h: 18 },
+        { x: 42, y: 44, w: 24, h: 24 }
+      ];
+      const keys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
+      let status = 'Deliver the parcel to the door.';
+
+      function resetParcel() {
+        parcel.x = 18;
+        parcel.y = 180;
+      }
+
+      function rectsOverlap(a, b) {
+        return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+      }
+
+      function update() {
+        const prevX = parcel.x;
+        const prevY = parcel.y;
+
+        if (keys.ArrowUp) parcel.y -= parcel.speed;
+        if (keys.ArrowDown) parcel.y += parcel.speed;
+        if (keys.ArrowLeft) parcel.x -= parcel.speed;
+        if (keys.ArrowRight) parcel.x += parcel.speed;
+
+        parcel.x = Math.max(0, Math.min(size - parcel.w, parcel.x));
+        parcel.y = Math.max(0, Math.min(size - parcel.h, parcel.y));
+
+        for (const obstacle of obstacles) {
+          if (rectsOverlap(parcel, obstacle)) {
+            parcel.x = prevX;
+            parcel.y = prevY;
+            status = 'Crash! Avoid the boxes.';
+            break;
+          }
+        }
+
+        if (rectsOverlap(parcel, door)) {
+          status = 'Delivered!';
+          resetParcel();
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, size, size);
+
+        ctx.fillStyle = '#d9f7ff';
+        ctx.fillRect(0, 0, size, size);
+
+        ctx.fillStyle = '#9dd7ff';
+        ctx.fillRect(0, size - 18, size, 18);
+
+        for (const obstacle of obstacles) {
+          ctx.fillStyle = '#ff8c42';
+          ctx.fillRect(obstacle.x, obstacle.y, obstacle.w, obstacle.h);
+        }
+
+        ctx.fillStyle = '#1f6f2f';
+        ctx.fillRect(door.x, door.y, door.w, door.h);
+        ctx.fillStyle = '#7f4f24';
+        ctx.fillRect(door.x + 4, door.y + 4, door.w - 8, door.h - 8);
+
+        ctx.fillStyle = '#ffcc00';
+        ctx.fillRect(parcel.x, parcel.y, parcel.w, parcel.h);
+
+        ctx.fillStyle = '#123';
+        ctx.font = '12px Arial';
+        ctx.fillText(status, 10, 16);
+      }
+
+      function tick() {
+        update();
+        draw();
+        requestAnimationFrame(tick);
+      }
+
+      window.addEventListener('keydown', (event) => {
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+          event.preventDefault();
+          keys[event.key] = true;
+        }
+      });
+
+      window.addEventListener('keyup', (event) => {
+        if (event.key in keys) {
+          keys[event.key] = false;
+        }
+      });
+
+      resetParcel();
+      tick();
+    </script>
   </body>
 </html>
