@@ -23,8 +23,8 @@
           url("images/Alexa-Echo-Transparent-Image.png") center/cover no-repeat;
       }
 
-      .stripe {
-        flex: 1 1 0;
+      .hero {
+        flex: 1;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -37,7 +37,7 @@
         position: relative;
       }
 
-      .stripe .label {
+      .hero .label {
         font-size: clamp(2.5rem, 10vw, 8rem);
         line-height: 1;
         color: #fff;
@@ -50,13 +50,6 @@
           0 0 5px #2dd4bf,
           0 0 8px #5eead4,
           0 0 12px #0f766e;
-      }
-
-      .stripe:nth-child(odd) {
-        background: rgba(15, 23, 42, 0.2);
-      }
-      .stripe:nth-child(even) {
-        background: rgba(255, 255, 255, 0.08);
       }
 
       .arrow {
@@ -85,14 +78,9 @@
     </style>
   </head>
   <body>
-    <div class="stripe"><div class="label">Alexa</div></div>
-    <div class="stripe"><div class="label">Alexa</div></div>
-    <div class="stripe"><div class="label">Alexa</div></div>
-    <div class="stripe"><div class="label">Alexa</div></div>
-    <div class="stripe"><div class="label">Alexa</div></div>
-    <div class="stripe"><div class="label">Alexa</div></div>
-    <div class="stripe"><div class="label">Alexa</div></div>
-    <div class="stripe"><div class="label">Alexa</div></div>
+    <main class="hero">
+      <div class="label">Alexa</div>
+    </main>
     <div class="arrow" aria-hidden="true">↓</div>
   </body>
 </html>
