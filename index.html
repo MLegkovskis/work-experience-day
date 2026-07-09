@@ -9,48 +9,61 @@
         color-scheme: light dark;
         font-family: Arial, Helvetica, sans-serif;
       }
+      html, body {
+        height: 100%;
+      }
       body {
         margin: 0;
         min-height: 100vh;
-        display: grid;
-        place-items: center;
-        background: linear-gradient(120deg, #232f3e, #00a8e1);
+        display: flex;
+        flex-direction: column;
         color: #fff;
       }
-      .card {
-        text-align: center;
-        background: rgba(0, 0, 0, 0.35);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 16px;
-        padding: 2rem;
-        width: min(90vw, 700px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+
+      /* Horizontal stripes: each stripe fills available width and grows equally */
+      .stripe {
+        flex: 1 1 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 2rem;
+        box-sizing: border-box;
+        text-transform: uppercase;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        -webkit-font-smoothing: antialiased;
       }
-      h1 {
-        margin-top: 0;
-        font-size: clamp(1.8rem, 4vw, 3rem);
+
+      /* Large, responsive text */
+      .stripe .label {
+        font-size: clamp(2.5rem, 10vw, 8rem);
+        line-height: 1;
       }
-      p {
-        margin-bottom: 0;
-        opacity: 0.9;
+
+      /* Alternating color scheme for contrast */
+      .stripe:nth-child(odd) {
+        background: linear-gradient(90deg,#0b3d91,#1663c7);
+        color: #fff;
       }
-      code {
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 8px;
-        padding: 0.2rem 0.4rem;
+      .stripe:nth-child(even) {
+        background: linear-gradient(90deg,#ffd23f,#ff7a18);
+        color: #0b2b5a;
+      }
+
+      /* Ensure very short viewports remain readable */
+      @media (max-height: 420px) {
+        .stripe .label { font-size: clamp(1.4rem, 6vw, 3.6rem); }
       }
     </style>
   </head>
   <body>
-    <main class="card">
-      <h1>Alexa Marketing Playground</h1>
-      <p>This starter page is generated from <code>app.py</code> and deployed via GitHub Pages.</p>
-      <p id="build-time"></p>
-    </main>
-    <script>
-      const now = new Date();
-      document.getElementById("build-time").textContent =
-        `Loaded at ${now.toLocaleString()}`;
-    </script>
+    <div class="stripe"><div class="label">Alexa</div></div>
+    <div class="stripe"><div class="label">Alexa</div></div>
+    <div class="stripe"><div class="label">Alexa</div></div>
+    <div class="stripe"><div class="label">Alexa</div></div>
+    <div class="stripe"><div class="label">Alexa</div></div>
+    <div class="stripe"><div class="label">Alexa</div></div>
+    <div class="stripe"><div class="label">Alexa</div></div>
+    <div class="stripe"><div class="label">Alexa</div></div>
   </body>
 </html>
