@@ -19,8 +19,19 @@
         flex-direction: column;
         color: #fff;
         background:
-          linear-gradient(rgba(2, 8, 23, 0.7), rgba(2, 8, 23, 0.55)),
-          url("images/Alexa-Echo-Transparent-Image.png") center/cover no-repeat;
+          linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(251, 191, 36, 0.08)),
+          linear-gradient(180deg, #7dd3fc 0%, #fde68a 45%, #fbbf24 100%);
+        overflow: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(circle at top left, rgba(255,255,255,0.85), transparent 20%),
+          radial-gradient(circle at 80% 20%, rgba(255,255,255,0.6), transparent 15%);
+        pointer-events: none;
       }
 
       .hero {
@@ -36,6 +47,16 @@
         -webkit-font-smoothing: antialiased;
         position: relative;
         overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0 0;
+        height: 36%;
+        background: linear-gradient(180deg, rgba(255,240,170,0) 0%, rgba(251, 191, 36, 0.65) 100%);
+        clip-path: polygon(0 100%, 0 55%, 10% 60%, 22% 45%, 35% 63%, 50% 42%, 66% 65%, 82% 50%, 100% 58%, 100% 100%);
+        pointer-events: none;
       }
 
       .hero::before {
@@ -66,10 +87,10 @@
         align-items: center;
         gap: 1rem;
         padding: 0.9rem 1rem;
-        background: rgba(2, 6, 23, 0.74);
-        border: 1px solid rgba(125, 211, 252, 0.55);
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.45);
         border-radius: 1rem;
-        box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.25);
         backdrop-filter: blur(8px);
       }
 
@@ -107,6 +128,7 @@
         font-size: 0.95rem;
         text-transform: uppercase;
         letter-spacing: 0.16em;
+        color: #fff7ed;
       }
 
       .echo-dot-copy ul {
@@ -151,7 +173,7 @@
         right: 0.9rem;
         z-index: 20;
         font-size: 2.1rem;
-        filter: drop-shadow(0 0 10px rgba(125, 211, 252, 0.8));
+        filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.8));
         animation: unicornFloat 2.8s ease-in-out infinite;
         transform: rotate(-8deg);
       }
@@ -161,7 +183,7 @@
         content: '✨';
         position: absolute;
         font-size: 0.8rem;
-        color: #fef3c7;
+        color: #fff7ed;
         animation: sparkleTwinkle 1.6s ease-in-out infinite;
       }
 
@@ -174,6 +196,24 @@
         bottom: -0.3rem;
         right: -0.1rem;
         animation-delay: 0.5s;
+      }
+
+      .beach-seagull {
+        position: fixed;
+        right: 2.2rem;
+        top: 4.8rem;
+        font-size: 2.5rem;
+        z-index: 18;
+        animation: gullWobble 2.2s ease-in-out infinite;
+      }
+
+      .beach-seagull::after {
+        content: "🍟";
+        position: absolute;
+        left: 1.3rem;
+        top: 1rem;
+        font-size: 1.1rem;
+        animation: chipNibble 1.4s ease-in-out infinite;
       }
 
       .hero .logo {
@@ -324,6 +364,16 @@
         50% { opacity: 1; transform: scale(1.15); }
       }
 
+      @keyframes gullWobble {
+        0%, 100% { transform: translateY(0) rotate(-4deg); }
+        50% { transform: translateY(-0.35rem) rotate(4deg); }
+      }
+
+      @keyframes chipNibble {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(-12deg); }
+      }
+
       @keyframes floatOrbit {
         0%, 100% { transform: scale(0.95); opacity: 0.7; }
         50% { transform: scale(1.05); opacity: 1; }
@@ -347,6 +397,7 @@
       <span></span>
     </div>
     <div class="sparkle-unicorn" aria-hidden="true">🦄</div>
+    <div class="beach-seagull" aria-hidden="true">🕊️</div>
 
     <section class="game-shell" aria-label="Parcel delivery mini game">
       <h2>Parcel Run</h2>
